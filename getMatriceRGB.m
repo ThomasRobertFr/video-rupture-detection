@@ -1,9 +1,10 @@
-function colorMatrice = getMatriceRGB(frames)
+function colorMatrice = getMatriceRGB(vidObj)
     nbIntensity = 256;
     nbLign = nbIntensity*3;
-    nbFrame = size(frames, 4);
+    nbFrame = vidObj.NumberOfFrames
     colorMatrice = zeros(nbLign, nbFrame);
     for i=1:nbFrame
-        colorMatrice(:, i) = getVectorRGB(frames(:, :, :, i));
+        frame = read(vidObj, i);
+        colorMatrice(:, i) = getVectorRGB(frame);
     end
 end

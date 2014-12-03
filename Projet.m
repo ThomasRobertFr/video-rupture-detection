@@ -6,8 +6,7 @@ A2 = 15;
 %%
 
 vidObj = VideoReader('StarWars.mp4');
-frames = read(vidObj, [1,Inf]);
-signal = getMatriceRGB(frames)';
+signal = getMatriceRGB(vidObj)';
 
 %%
 
