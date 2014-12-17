@@ -1,4 +1,4 @@
-function D = computeSVMDistance(X1, X2)
+function D = SVMDistance(X1, X2)
 
 kernel = 'gaussian';
 kerneloption = 1;
@@ -22,6 +22,7 @@ c1p1 = acos(-rho1/sqrt(alpha1' * Ksup1 * alpha1));
 c2p2 = acos(-rho2/sqrt(alpha2' * Ksup2 * alpha2));
 
 D = c1c2/(c1p1 + c2p2);
+D = real(D);
 
 % [xtest1, xtest2] = meshgrid(-10:0.5:10 ,-10:0.5:10) ;
 % 
