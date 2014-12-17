@@ -4,7 +4,6 @@ function mat = getCooccurrencesMatToVect(vidObj)
     % frames. For example : diffs(2) is the difference between frame 2
     % and frame 1. diffs(1) always equals 0.
     nbFrame = vidObj.NumberOfFrames;
-    nbFrame = 2000;
     grayScale = 64;
     mat = zeros(grayScale, nbFrame);
     for i=1:nbFrame
