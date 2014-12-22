@@ -1,0 +1,68 @@
+ \documentclass[compress,xcolor=table]{beamer}
+\usepackage[french]{babel}
+\selectlanguage{french}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{tikz}
+\usepackage{pdfpages}
+\usepackage{dirtree}
+
+\usetheme{edts}
+
+% remove some frames for navigation
+\makeatletter
+\let\beamer@writeslidentry@miniframeson=\beamer@writeslidentry
+\def\beamer@writeslidentry@miniframesoff{%
+  \expandafter\beamer@ifempty\expandafter{\beamer@framestartpage}{}% does not happen normally
+  {%else
+    % removed \addtocontents commands
+    \clearpage\beamer@notesactions%
+  }
+}
+\newcommand*{\miniframeson}{\let\beamer@writeslidentry=\beamer@writeslidentry@miniframeson}
+\newcommand*{\miniframesoff}{\let\beamer@writeslidentry=\beamer@writeslidentry@miniframesoff}
+\makeatother
+% end remove frames from navigation
+
+
+\title{Détection de rupture dans une vidéo}
+\subtitle{Soutenance de projet d'EDTS}
+\date{\today}
+\author{Ya \textsc{Huang} \and Rémi \textsc{Mussard} \and Thomas \textsc{Robert}}
+\institute{Institut National des Sciences Appliquées de Rouen}
+
+\setbeameroption{show notes}
+
+\begin{document}
+
+\begin{frame}[plain]
+	\titlepage
+    \setcounter{framenumber}{0}
+\end{frame}
+
+\begin{frame}{Sommaire}
+\begin{minipage}{\textwidth}
+   \linespread{1.35}
+	\tableofcontents[hideallsubsections]
+\end{minipage}
+\end{frame}
+
+\section{Introduction}
+\subsection{}
+\input{1_Intro.tex}
+
+\section{Extraction de caractéristiques}
+\subsection{}
+\input{2_Extraction.tex}
+
+\section{Détection de rupture}
+\subsection{}
+\input{3_Rupture.tex}
+
+\section{Conclusion}
+\subsection{}
+\input{4_Conclusion.tex}
+
+\end{document}
+

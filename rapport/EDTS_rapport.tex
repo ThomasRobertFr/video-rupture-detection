@@ -1,0 +1,43 @@
+\documentclass[12pt,titlepage,a4paper,twoside]{report}
+
+\input{include/packages.tex}
+
+\title{Détection de rupture dans une vidéo}
+\renewcommand\soustitre{Soutenance de projet d'EDTS}
+\date{\today}
+\author{Ya \textsc{Huang} \\ Rémi \textsc{Mussard} \\ Thomas \textsc{Robert}}
+\renewcommand\infoBig{Projet d'EDTS}
+\renewcommand\infoSmall{Institut National des Sciences Appliquées de Rouen}
+
+\begin{document}
+
+
+\hypersetup{
+    colorlinks=false,
+    pdfborder={0 0 0},
+}
+
+\titleINSA{25}{style/internet_map.png}{-70}{0}{370}{\href{http://internet-map.net/}{\textcolor{white}{The Internet Map}}}
+
+%\setlength{\parskip}{2pt} % interparagraphes
+\tableofcontents{}
+%\setlength{\parskip}{8pt} % interparagraphes
+
+\hypersetup{ %
+      colorlinks=false,
+      linkbordercolor=black,
+      pdfborderstyle={/S/U/W 1}
+}
+
+\input{1_Intro.tex}
+\input{2_Extraction.tex}
+\input{3_Rupture.tex}
+\input{4_Conclusion.tex}
+
+\nocite{Desobry05}
+\nocite{Loosli05}
+\bibliographystyle{abstract}
+\bibliography{include/biblio}	
+\thispagestyle{fancy}
+
+\end{document}

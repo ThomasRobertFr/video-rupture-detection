@@ -1,0 +1,104 @@
+
+% Texte
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{lmodern}
+\usepackage{eurosym}
+
+% Mise en page
+\usepackage{url}
+\usepackage[top=2.1cm,bottom=2cm,left=2cm,right=2cm]{geometry}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+    pdfborder={0 0 0},
+}
+\usepackage{multirow}
+\setlength{\parskip}{8pt} % interparagraphes
+
+\usepackage{color}
+\usepackage[table]{xcolor}
+
+\definecolor{javared}{rgb}{0.6,0,0} % for strings
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
+\definecolor{javapurple}{rgb}{0.5,0,0.35} % keywords
+\definecolor{javadocblue}{rgb}{0.25,0.35,0.75} % javadoc
+
+% TOC
+\usepackage{minitoc}
+\setcounter{tocdepth}{1} % TOC jusqu'a \section
+\setcounter{minitocdepth}{3}
+\dominitoc[n]
+\nomtcrule
+
+% Images
+%\usepackage{float}
+%\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage[final]{pdfpages}
+
+% Chapters
+\usepackage{titlesec, blindtext, color}
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{20pt}}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+
+% Algorithmique
+\usepackage{listings}
+%\usepackage{tikz}
+%\usetikzlibrary{arrows,shapes}\usetikzlibrary{arrows,shapes}
+
+% Maths
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+
+% Couverture
+\usepackage{include/templateINSA}
+\initINSA
+
+
+\newcommand{\espace}[1][1]{\vspace{#1em}}
+
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist
+
+% Confidentiel
+\usepackage{eso-pic}
+\usepackage{rotating}
+
+\makeatletter
+
+% Add \textsubscript defined equivalent to \textsuperscript in latex.ltx
+\DeclareRobustCommand*\textsubscript[1]{%
+  \@textsubscript{\selectfont#1}}
+\def\@textsubscript#1{%
+  {\m@th\ensuremath{_{\mbox{\fontsize\sf@size\z@#1}}}}}
+
+% Biblio title
+\def\thebibliography#1{\chapter{Bibliographie\@mkboth
+{Bibliographie}{Bibliographie}}\list
+{[\arabic{enumi}]}{\settowidth\labelwidth{[#1]}\leftmargin\labelwidth
+\advance\leftmargin\labelsep
+\usecounter{enumi}}
+\def\newblock{\hskip .11em plus .33em minus .07em}
+\sloppy\clubpenalty4000\widowpenalty4000
+\sfcode`\.=1000\relax}
+\makeatother
+
+% Anciens packages :
+%\usepackage{url}
+%\usepackage{wrapfig}
+%\usepackage{graphicx}
+%\usepackage{sectsty}
+%\usepackage{lastpage}
+%\usepackage{multirow}
+%\usepackage{float}
+%\usepackage{eso-pic}
+%\usepackage[colorlinks=true,urlcolor=blue,linktocpage=true,hypertexnames=true,pdfmenubar=true,frenchlinks=true,pagecolor=black,menucolor=black,linkcolor=black]{hyperref}
+%\usepackage[french]{minitoc}
+%\usepackage[top=3cm, bottom=3cm, left=2cm, right=2cm]{geometry}
+%\usepackage[babel=true]{csquotes}
+%\usepackage{colortbl,hhline}
+%\usepackage{longtable}
