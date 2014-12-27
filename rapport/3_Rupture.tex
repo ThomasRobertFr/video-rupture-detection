@@ -16,9 +16,9 @@ On calcule ensuite, pour chaque position $k$, une valeur de distance $D(k)$ entr
 
 On détermine ensuite les zones de rupture comme étant les zones telles que $|D(k)| > C$, avec $C$ un seuil fixé, puis on détermine pour chaque zone de rupture $\mathcal{K}_i$ la position $k_{r_i}$ exacte de la rupture comme étant $k_{r_i} = \displaystyle \argmax_{k \in \mathcal{K}_i} |D(k)|$.
 
-Afin de déterminer le seuil $C$, il est possible d'utiliser une méthode probabiliste utilisant la $p$-valeur. En posant $M = \displaystyle \max_{k} |D(k)|$, et l'hypothèse $\mathcal{H}_0$ où il n'y a pas de rupture, on veut $\mathbb{P}(M>C\mid	\mathcal{H}_0) < p$.
+Afin de déterminer le seuil $C$, il est possible d'utiliser une méthode probabiliste utilisant la $p$-valeur. En posant $M = \displaystyle \max_{k} |D(k)|$, et l'hypothèse $\mathcal{H}_0$ où il n'y a pas de rupture, on veut $C$ tel que $\mathbb{P}(M>C\mid	\mathcal{H}_0) < p$ avec $p$ fixé.
 
-Pour estimer $C$, on calcule des estimations de réalisation de $M$ en permutant le signal temporel $X$ (on force en quelque sorte $\mathcal{H}_0$) et en calculant $\hat{M}$ sur ce nouveau signal. Ces réalisations $\hat{M}$ permettent d'estimer la distribution de $M$. En supposant qu'il s'agisse d'une loi normale, on peut estimer ses paramètres $\hat{\mu}$ et $\hat{\sigma}$, et on peut ainsi estimer le seuil $C$ en fonction d'une valeur fixée de $p$.
+Pour estimer $C$, on calcule des estimations de réalisation de $M$ sous l'hypothèse $\mathcal{H}_0$ en permutant le signal temporel $X$ (cela force en quelque sorte $\mathcal{H}_0$) et en calculant $\hat{M}$ sur ce nouveau signal. Ces réalisations $\hat{M}$ permettent d'estimer la distribution de $M$. En supposant qu'il s'agisse d'une loi normale, on peut estimer ses paramètres $\hat{\mu}$ et $\hat{\sigma}$, et on peut ainsi estimer le seuil $C$ en fonction d'une valeur fixée de $p$.
 
 \subsection{Résultats}
 

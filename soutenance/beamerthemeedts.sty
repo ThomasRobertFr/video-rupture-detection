@@ -80,7 +80,7 @@
 % General
 \setbeamercolor{normal text}{fg=hsrmWarmGreyDark}
 \setbeamercolor{structure}{fg=hsrmWarmGreyDark}
-\setbeamercolor{alerted text}{fg=hsrmRed}
+\setbeamercolor{alerted text}{fg=white}
 \setbeamercolor{example text}{fg=white}
 \setbeamercolor{copyright text}{fg=hsrmWarmGreyLight}
 \setbeamercolor{palette primary}{fg=hsrmWarmGreyDark}
@@ -213,7 +213,11 @@
 \setbeamertemplate{frametitle}
 {
 \begin{beamercolorbox}[wd=\paperwidth,leftskip=0.3cm,rightskip=0.3cm,ht=3ex,dp=1.5ex]{frametitle}
- \usebeamerfont{frametitle}\insertframetitle%
+  \ifthenelse{\equal{\insertframesubtitle}{}}{
+    \usebeamerfont{frametitle}\insertframetitle%
+  }{
+    \usebeamerfont{frametitle}\insertframetitle~{\small -- \textit{\insertframesubtitle}}%
+  }
  \hfill \raisebox{-6pt}{\includegraphics[height=7.7mm]{images/insaBlanc.png}}
 \end{beamercolorbox}
 }
