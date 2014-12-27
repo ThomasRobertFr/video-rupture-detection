@@ -1,1 +1,51 @@
 \chapter{Détection de rupture}
+
+\section{Introduction}
+
+Cette partie présentera les deux méthodes de détection de rupture implémentées : une méthode par dérivée filtrée utilisant la $p$-valeur décrite par \cite{Bertrand11} et \cite{Herault14}, et une méthode de détection de changement de noyau décrite par \cite{Desobry05}.
+
+Cette détection de rupture sera appliquée sur une matrice de signal $X$ contenant $n$ lignes d'« observations », une par image de la vidéo, et $p$ colonnes de caractéristiques, 1 pour chaque caractéristique extraite de la vidéo.
+
+\section{Dérivée filtrée}
+
+\subsection{Principe}
+
+Le principe de cette première méthode est de parcourir le signal temporel $X$ avec deux fenêtres de taille $A_1$ et $A_2$ respectivement avant et après une position $k$ (de $k - A_1$ à $k-1$ et de $k$ à $k+A_2-1$).
+
+On calcule ensuite, pour chaque position $k$, une valeur de distance $D(k)$ entre des indicateurs $\hat{\theta}$ calculés sur chaque fenêtre.
+
+On détermine ensuite les zones de rupture comme étant les zones telles que $|D(k)| > C$, avec $C$ un seuil fixé, puis on détermine pour chaque zone de rupture $\mathcal{K}_i$ la position $k_{r_i}$ exacte de la rupture comme étant $k_{r_i} = \displaystyle \argmax_{k \in \mathcal{K}_i} |D(k)|$.
+
+Afin de déterminer le seuil $C$, il est possible d'utiliser une méthode probabiliste utilisant la $p$-valeur. En posant $M = \displaystyle \max_{k} |D(k)|$, et l'hypothèse $\mathcal{H}_0$ où il n'y a pas de rupture, on veut $\mathbb{P}(M>C\mid	\mathcal{H}_0) < p$.
+
+Pour estimer $C$, on calcule des estimations de réalisation de $M$ en permutant le signal temporel $X$ (on force en quelque sorte $\mathcal{H}_0$) et en calculant $\hat{M}$ sur ce nouveau signal. Ces réalisations $\hat{M}$ permettent d'estimer la distribution de $M$. En supposant qu'il s'agisse d'une loi normale, on peut estimer ses paramètres $\hat{\mu}$ et $\hat{\sigma}$, et on peut ainsi estimer le seuil $C$ en fonction d'une valeur fixée de $p$.
+
+\subsection{Résultats}
+
+TODO
+
+\section{Changement de noyau}
+
+\subsection{Principe}
+
+Le principe de cette méthode est identique au principe de base de la méthode de dérivée filtrée, on calcule une distance $D(k)$ entre deux fenêtres autour de $k$. Cependant, dans le cas de cette méthode, la distance $D(k)$ est calculée comme étant une distance entre les paramètres $\rho_i$ et $\alpha_i$ de deux \textit{one-class SVM} calculés respectivement sur chaque fenêtre.
+
+Dans ce cas, pour chaque valeur de $k$, la distance est la suivante :
+
+\begin{align}
+  D &= \frac{\overset{\frown}{c_1 c_2}}{\overset{\frown}{c_1 p_1} + \overset{\frown}{c_2 p_2}} \notag \\
+  \overset{\frown}{c_1 c_2} &= \arccos\left(\frac{
+  	\alpha_1^\top K_{12} \alpha_2
+  	}{
+  	\sqrt{\alpha_1^\top K_{11} \alpha_1} \sqrt{\alpha_2^\top K_{22} \alpha_2}
+  	} \right) \notag \\
+  \overset{\frown}{c_i p_i} &= \arccos\left( \frac{\rho_i}{\sqrt{\alpha_i^\top K_{ii} \alpha_i}}  \right) \notag
+\end{align}
+
+avec $i$ et $j$ le numéro du \textit{one-class SVM}, $\alpha_i$ les variables duales, $\rho_i$ le biais et $K_{ij}$ la matrice de Gram avec les données $i$ et $j$.
+
+\subsection{Résultats}
+
+TODO
+
+\nocite{Loosli05}
