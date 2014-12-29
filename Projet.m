@@ -73,6 +73,35 @@ plot(A1+1:n-A2, (A1+1:n-A2)*0+C2);
 stem(points2, points2 * 0 + 1, '.');
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% Bout de code pour plusieurs caract %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% Calcul des caractéristiques
+% signal = cell(1, 4);
+% C = cell(1, 4);
+% D = cell(1, 4);
+% 
+% vidObj = VideoReader('StarWars.mp4');
+% 
+% signal{1} = getMatriceRGB(vidObj)';
+% signal{2} = getMatriceYCbCr(vidObj)';
+% signal{3} = getMatriceCooccurrence(vidObj)';
+% signal{4} = getMatricesGradient(vidObj)';
+% 
+%% Calcul des ruptures avec une distance "différence de moyennes"
+% 
+% for i=1:length(signal)
+%     Ms = calculMsRandperm(A1, A2, signal{i}, 100);
+%     C{i} = findC(Ms, 0.4);
+%     D{i} = calculDistances(A1, A2, signal{i}, @meanDiffDistance);
+% end
+% 
+% [zones, points] = detectionRuptureMulti(D, C);
+% points = points + A1 - 1;
+%
+%% Affichage du résultat
+%
+% afficherResultat2(vidObj, points)
 
 
