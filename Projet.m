@@ -1,129 +1,101 @@
-%% Constantes
-
-A1 = 15;
-A2 = 15;
-ptsApprox = [0 5 10 26.3 29.3 31.3 33.3 36.8 38.7 41.8 44.1 48 50 55.8 60.4 68.2 84.7];
-
 %% Calcul des caractéristiques
 
-%vidObj = VideoReader('StarWars.mp4');
-%[signal, ps] = loadVideoCaracts(vidObj, {@getVectorCooccurrence, @getGradientImage, @getVectorRGB, @getVectorYCbCr});
+compute = false;
 
-load signal.mat
+% Vraies ruptures (secondes)
+ptsApprox = [5 26.3 29.3 31.3 33.3 36.8 38.7 41.8 44.1 48 50 55.8 60.4 68.2 84.7];
+
+% Chargement de la vidéo
+vidObj = VideoReader('StarWars.mp4');
+if (compute)
+    [signal, ps] = loadVideoCaracts(vidObj, {@getVectorCooccurrence, @getGradientImage, @getVectorRGB, @getVectorYCbCr});
+else
+    load signal.mat
+end
+n = vidObj.NumberOfFrames;
+
+% Régularisation des caractéristiques les unes par rapport aux autres
 signal = regularizeCaracts(signal, ps);
 
-%% Prétraitement des caractéristiques & calcul de distances
+%% Prétraitement des caractéristiques
 
 regulToMax = @(X) X/max(X);
 calculDist = @(signal) regulToMax(calculDistances(A1, A2, signal, @meanDiffDistance));
 
-i = 1;
-signals = {}; titles = {};
-signals{i}  = signal; titles{i} = 'signal'; i = i + 1;
-signals{i}  = sqrt(signal); titles{i} = 'sqrt(signal)'; i = i + 1;
-signals{i}  = log(signal*1e2+1); titles{i} = 'log(signal*1e2+1)'; i = i + 1;
-signals{i}  = log(signal*1e3 + 1); titles{i} = 'log(signal*1e3+1)'; i = i + 1;
-signals{i}  = log(signal*1e4 + 1); titles{i} = 'log(signal*1e4+1)'; i = i + 1;
-signals{i}  = log(signal*1e5 + 1); titles{i} = 'log(signal*1e5+1)'; i = i + 1;
-signals{i}  = log(signal*1e6 + 1); titles{i} = 'log(signal*1e6+1)'; i = i + 1;
-signals{i}  = log(signal*1e7 + 1); titles{i} = 'log(signal*1e7+1)'; i = i + 1;
-datay = cellfun(calculDist, signals, 'UniformOutput', false);
-datax = (A1+1:vidObj.NumberOfFrames - A2)/vidObj.FrameRate;
+titles  = {'signal', 'sqrt(signal)', 'log(signal*1e2+1)', 'log(signal*1e3+1)', 'log(signal*1e4+1)', 'log(signal*1e5+1)', 'log(signal*1e6+1)', 'log(signal*1e7+1)', 'log(signal*1e8+1)', 'log(signal*1e9+1)', 'log(signal*1e10+1)', 'signal .* (signal < 1e-4) + 1e-4 .* (signal >= 1e-4)'};
+signals = cellfun(@eval, titles, 'UniformOutput', false);
+datay   = cellfun(calculDist, signals, 'UniformOutput', false);
+datax   = (A1+1:n-A2)/vidObj.FrameRate;
 
-distancesGUI(signals, datax, datay, ptsApprox, titles);
+signalsRegulX = 0:.001:1;
+reguls = cellfun(@(s) strrep(s, 'signal', 'signalsRegulX'), titles, 'UniformOutput', false);
+signalsRegulYs = cellfun(@eval, reguls, 'UniformOutput', false);
+
+signalAndDistancesGUI(signals, signalsRegulX, signalsRegulYs, datax, datay, ptsApprox, titles);
+
+%% Test de différentes fenêtres
+
+X = log(signal*1e9+1);
+
+regulToMax = @(X) X/max(X);
+calculDist = @(A) regulToMax(calculDistances(A, A, X, @meanDiffDistance));
+calculX = @(A) (A+1:vidObj.NumberOfFrames - A)/vidObj.FrameRate;
+
+As     = {4, 7, 10, 13, 15, 17, 20, 24, 28, 31, 34};
+titles = strcat(cellfun(@(A) 'A1 = A2 = ', As, 'UniformOutput', false), cellfun(@num2str, As, 'UniformOutput', false));
+datay  = cellfun(calculDist, As, 'UniformOutput', false);
+datax  = cellfun(calculX, As, 'UniformOutput', false);
+
+distancesGUI(datax, datay, ptsApprox, titles);
+
+%% Test de différentes fenêtres pour A2
+
+X = log(signal*1e9+1);
+A1 = 20;
+
+regulToMax = @(X) X/max(X);
+calculDist = @(A2) regulToMax(calculDistances(A1, A2, X, @meanDiffDistance));
+calculX = @(A2) (A1+1:n-A2)/vidObj.FrameRate;
+
+As     = {4, 7, 10, 13, 15, 17, 20, 24, 28, 31, 34};
+titles = strcat(cellfun(@(A) 'A1 = 20 / A2 = ', As, 'UniformOutput', false), cellfun(@num2str, As, 'UniformOutput', false));
+datay  = cellfun(calculDist, As, 'UniformOutput', false);
+datax  = cellfun(calculX, As, 'UniformOutput', false);
+
+distancesGUI(datax, datay, ptsApprox, titles);
 
 %% Calcul des ruptures avec une distance "différence de moyennes"
 
-signal2 = log(signal*1e5 + 1);
-D = calculDistances(A1, A2, signal, @meanDiffDistance);
-C = 10;
+X = log(signal*1e9+1);
+A1 = 20;
+A2 = 28;
+C = .6;
+
+D = calculDistances(A1, A2, X, @meanDiffDistance);
+D = D / max(D);
+Dx = (A1+1:n-A2)/vidObj.FrameRate;
 
 [zones, points] = detectionRupture(D, C);
-points = points + A1 - 1
+points = points + A1 - 1;
 
-%% Affichage du résultat
-
-for i = 1:length(points)
-    subplot(3,1,1)
-    image(read(vidObj, points(i) - 10))
-    subplot(3,1,2)
-    image(read(vidObj, points(i)))
-    subplot(3,1,3)
-    image(read(vidObj, points(i) + 10))
-    pause
-end
-
-figure(2);
-n = length(signal);
-hold off;
-plot(A1+1:n-A2, D/max(D));
-hold all;
-plot(A1+1:n-A2, (A1+1:n-A2)*0+C/max(D));
-stem(points, points * 0 + 1, '.');
+afficherResultat(vidObj, Dx, D, C, points, points/vidObj.FrameRate, ptsApprox)
 
 %% Calcul des ruptures avec une distance par SVM
 
-D2 = calculDistances(A1, A2, signal, @SVMDistance);
+X = log(signal*1e9+1);
+A1 = 20;
+A2 = 28;
+C = .8;
 
-%%
-
-C2 = 1.8;
-[zones2, points2] = detectionRupture(D2, C2);
-points2 = points2 + A1 - 1
-
-%% Affichage du résultat
-
-for i = 1:length(points)
-    subplot(3,1,1)
-    image(read(vidObj, points2(i) - 10))
-    subplot(3,1,2)
-    image(read(vidObj, points2(i)))
-    subplot(3,1,3)
-    image(read(vidObj, points2(i) + 10))
-    pause
+if (compute)
+    D = calculDistances(A1, A2, X, @SVMDistance);
+else
+    load DSVM;
 end
 
-%%
+Dx = (A1+1:n-A2)/vidObj.FrameRate;
 
-figure(2);
-n = length(signal);
-hold off;
-%plot(signal);
-hold all;
-plot(A1+1:n-A2, D2./max(D2));
-plot(A1+1:n-A2, (A1+1:n-A2)*0+C2);
-stem(points2, points2 * 0 + 1, '.');
+[zones, points] = detectionRupture(D, C);
+points = points + A1 - 1;
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%% Bout de code pour plusieurs caract %%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%% Calcul des caractéristiques
-% signal = cell(1, 4);
-% C = cell(1, 4);
-% D = cell(1, 4);
-% 
-% vidObj = VideoReader('StarWars.mp4');
-% 
-% signal{1} = getMatriceRGB(vidObj)';
-% signal{2} = getMatriceYCbCr(vidObj)';
-% signal{3} = getMatriceCooccurrence(vidObj)';
-% signal{4} = getMatricesGradient(vidObj)';
-% 
-%% Calcul des ruptures avec une distance "différence de moyennes"
-% 
-% for i=1:length(signal)
-%     Ms = calculMsRandperm(A1, A2, signal{i}, 100);
-%     C{i} = findC(Ms, 0.4);
-%     D{i} = calculDistances(A1, A2, signal{i}, @meanDiffDistance);
-% end
-% 
-% [zones, points] = detectionRuptureMulti(D, C);
-% points = points + A1 - 1;
-%
-%% Affichage du résultat
-%
-% afficherResultat2(vidObj, points)
-
-
+afficherResultat(vidObj, Dx, D, C, points, points/vidObj.FrameRate, ptsApprox)
