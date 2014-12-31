@@ -1,0 +1,172 @@
+\section{Flux Optique}
+
+Et enfin, pour détecter des ruptures dans une vidéo, on va se baser sur le flux optique et plus particulièrement, sur le gradient des images. Nous évoquerons également les vecteurs vitesses qui n'ont pas donnés de résultats très concluant.
+
+\subsection{Définition du flux optique}
+
+Le flux optique (ou flot optique) représente le mouvement apparent des objets présents sur une image. Cette méthode permet d'estimer le mouvement entre deux images consécutives, à l'instant $t$ et $t + \Delta t$, à partir de la variation de la luminance. La luminosité est supposée constante entre deux images consécutives (séparées par un temps $\Delta t$) pour un même pixel, qui se serait déplacé de $(\Delta x, \Delta y)$. Ainsi, on obtient la relation suivante qui doit être vérifiée pour la grande majorité des pixels : $I(x, y, t) = I(x + \Delta x, y + \Delta y, t + \Delta t)$, avec $I$, l'intensité lumineuse.\\
+
+En supposant que le mouvement est petit et constant, on peut écrire la précédente équation sous forme différentielle, ce qui nous donne : 
+
+\[
+	\frac{dI(x, y, t)}{\Delta t} = \frac{\partial I}{\partial x}.\frac{\Delta x}{\Delta t} + \frac{\partial I}{\partial y}.\frac{\Delta y}{\Delta t} + \frac{\partial I}{\partial t} = 0
+\]
+
+Soit :
+
+\[
+	I_x.V_x + I_y.V_y = -I_t
+\]
+avec $V_x$ et $V_y$, le flux optique (ou les composants $(x, y)$ de la vitesse) et $I_x$, $I_y$ et $I_t$ les dérivées partielles de l'intensité de l'image.\\
+
+On se retrouve ainsi, avec une équation à deux inconnues ($V_x, V_y$), que l'on ne peut résoudre telle quelle. Différentes méthodes existent pour résoudre cette équation, en ajoutant diverses contraintes. Avant de voir deux de ces méthodes, voyons d'abord comment estimer la dérivé de l'image.
+
+\subsection{Matrice gradient}
+
+Pour calculer le gradient de l'intensité d'une image, on va se servir du filtre de Sobel. Ce filtre sert en traitement d'image à détecter des contours. Pour ce faire, le gradient de l'intensité de chaque pixel est calculé. Cela indique la direction de la plus forte variation du clair vers le sombre.\\
+
+Le filtre de Sobel se base sur des matrices de convolution. Une matrice subit une convolution avec l'image, afin de calculer une estimation des dérivées horizontales et verticales. En règle générale, on utilise les matrices de convolution suivantes :
+
+\begin{center}
+$
+	C_1 = \begin{pmatrix}
+		1 & 0 & -1 \\
+		2 & 0 & -2 \\
+		1 & 0 & -1 \\
+	\end{pmatrix}
+$
+ et 
+$	
+	C_2 = \begin{pmatrix}
+		1 & 2 & 1 \\
+		0 & 0 & 0 \\
+		-1 & -2 & -1 \\
+	\end{pmatrix}
+$
+\end{center}
+
+Ainsi, on va calculer les dérivées partielles de l'image, de tel sorte que $G_x$ et $G_y$ représentent respectivement, les approximations en $x$ et en $y$ :
+
+\begin{center}
+$
+	G_x = C_1 \ast Img
+$
+ et 
+$	
+	G_y = C_2 \ast Img
+$
+\end{center}
+avec $Img$ la matrice de l'image.
+
+Les gradients horizontaux et verticaux peuvent être combinés pour avoir une approximation de la norme du gradient $G$ : 
+
+\[
+	G = \sqrt{G_x^2 + G_y^2}
+\]
+
+Dans ce projet, c'est de cette caractéristique dont nous nous sommes servis, la norme du gradient, à savoir $G$. D'autres filtres que Sobel existent pour calculer une estimation du gradient d'une image. Ces autres filtres se basent également sur des matrices de convolution, de taille diverse, avec des valeurs différentes.
+
+\subsection{Détermination du flux optique par la méthode de Lucas-Kanade}
+
+Connaissant maintenant les dérivées partielles de l'image, nous pouvons maintenant chercher à résoudre l'équation du flux optique. Le principe de la méthode de Lucas-Kanade est le suivant : Au lieu d'estimer le déplacement d'un seul pixel, on va chercher à estimer la vitesse d'un groupe de pixels voisins. Cette méthode suppose que le déplacement au voisinage d'un pixel $p$ est petit et approximativement constant, entre deux images consécutives. Ainsi, l'équation du flux optique peut être considérée vraie pour tous les pixels situés dans une région centrée sur le pixel $p$. On passe d'une équation à deux inconnues à un système de $ n $ équations à deux inconnues. $n$ étant le nombre de pixel composant la région choisie. On peut ainsi écrire notre système de la manière suivante :
+
+\[
+ \left \{
+ \begin{array}{c @{=} c}
+     I_x(p_1).V_x + I_y(p1).V_y & -I_t(p_1) \\
+     I_x(p_2).V_x + I_y(p2).V_y & -I_t(p_2) \\
+     \vdots & \vdots \\
+     I_x(p_n).V_x + I_y(pn).V_y & -I_t(p_n) \\
+ \end{array}
+ \right.
+\]
+
+avec $p_1..p_n$ les pixels situés dans la région choisie.\\
+
+Ce système est surdéterminé. Il est possible de le résoudre avec la méthode des moindres carrés :
+
+\begin{center}
+$V = (A^\intercal A)^{-1} A^\intercal b$
+\end{center}
+
+avec 
+
+\begin{center}
+$
+ A = \begin{pmatrix}
+     I_x(p_1) & I_y(p_1) \\
+     I_x(p_2) & I_y(p_2) \\
+     \vdots & \vdots \\
+     I_x(p_n) & I_y(p_n) \\
+ \end{pmatrix}
+$, 
+$
+ V = \begin{pmatrix}
+     V_x \\
+     V_y \\
+ \end{pmatrix}
+$
+ et 
+$
+ b = \begin{pmatrix}
+     -I_t(p_1) \\
+     -I_t(p_2) \\
+     \vdots \\
+     -I_t(p_n) \\
+ \end{pmatrix}
+$
+\end{center}
+
+\subsection{Corrélation de phase}
+
+Une seconde méthode pour déterminer le flux optique consiste à utiliser la corrélation de phase. Cette méthode utilise le domaine fréquentiel pour avoir une estimation de la translation observée entre deux images consécutives. Cette méthode suppose que l'on dispose de deux images à comparer.\\
+
+Pour être plus précis avec cette méthode, on va calculer le flux optique sur des régions de l'image et pas sur l'image entière (comme dans la méthode précédente). Soit les images $img_1$ et $img_2$. On va passer ces images dans le domaine fréquentiel grâce à la transformée de Fourier :
+
+\[
+	G_1 = fft(img_1), G_2 = fft(img_2)
+\]
+
+On calcule ensuite le spectre de puissance croisé en faisant une multiplication terme à terme de la transformée de Fourier de l'image 1 et du conjugué de la transformée de Fourier de l'image 2. On normalise ensuite ce produit :
+
+\[
+	R = \frac{G_1 \ \circ \ G_2^*}{|G_1 \ \circ \ G_2^*|}
+\]
+
+Suite à quoi, on repasse dans le domaine temporel en appliquant une transformée inverse de Fourier:
+
+\[
+	r = fft\_inv(R)
+\]
+
+A partir de la transformée inverse, on recherche le maximum. Les indices en $x$ et en $y$ de ce pic correspondent aux translations observées en $x$ et en $y$ :
+
+\[
+	(\Delta x, \Delta y) = argmax_{(x, y)}(r)
+\]
+
+
+\subsection{Détection de rupture et flux optique}
+
+Le flux optique, qui représente le mouvement des objets d'une image, va permettre de comparer deux images consécutives d'une séquence vidéo. Dans une même scène, les mouvements des objets seront continus et donc, entre deux images consécutives, on aura un mouvement quasiment constant. Dans le cas d'une rupture, les deux images auront un flux optique suffisamment différent pour détecter cette rupture.\\
+
+Cependant, dans notre cas, les résultats ont été meilleurs avec la matrice gradient. Ceci est sans doute dû au fait que le gradient permet de détecter les contours dans une image. Ainsi, d'une image à l'autre, sur une même scène, on retrouve les mêmes contours. Alors que pour le flux optique, lorsqu'il y a une rupture, l'estimation de ce dernier est faussée et on ne détecte pas forcément la rupture.
+
+\subsection{Avantages}
+
+Les avantages de cette méthode sont les suivants :
+
+\begin{itemize}
+	\item Relativement robuste aux mouvements;
+	\item Relativement robuste aux changements d'intensité de couleur (comme le bleu du ciel).
+\end{itemize}
+
+\subsection{Inconvénients}
+
+Les inconvénients de cette méthode sont les suivants :
+
+\begin{itemize}
+	\item Peu robuste aux transitions avec un effet de fondu ;
+	\item Assez lourd à mettre en place (l'idéal étant de déterminer le flux optique pour chaque pixel) ;
+	\item Peu robuste lors de l'arrivé ou de la disparition d'un objet dans la scène.
+\end{itemize}
