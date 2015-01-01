@@ -82,6 +82,32 @@ points = points + A1 - 1;
 
 afficherResultat(vidObj, Dx, D, C, points, points/vidObj.FrameRate, ptsApprox)
 
+%% Calcul de C avec la méthode la p-valeur
+% Très mauvais résultats avec 200 tirages, on a C = .46 pour p = 0, donc
+% aucune chance d'atteindre les valeurs supérieures, qui sont pourtant bien
+% meilleures.
+
+X = log(signal*1e9+1);
+A1 = 20;
+A2 = 28;
+
+if (compute)
+    Ms = calculMsRandperm(A1, A2, X, 200);
+else
+    load Ms
+end
+D = calculDistances(A1, A2, X, @meanDiffDistance);
+Ms = Ms / max(D);
+Cs = findC(Ms, 0:.01:1);
+figure;
+subplot(2,1,1);
+plot(Ms);
+title('Ms');
+subplot(2,1,2);
+plot(Cs);
+title('Cs');
+xlabel('p');
+
 %% Calcul des ruptures avec une distance par SVM
 
 X = log(signal*1e9+1);
