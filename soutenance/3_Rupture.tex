@@ -14,6 +14,37 @@ Déterminer les ruptures dans la vidéo au travers des caractéristiques extrait
 
 \end{frame}
 
+\begin{frame}{Prétraitement des caractéristiques}
+
+{
+\definecolor{tempGreen}{HTML}{96EAC0}
+\setbeamercolor{block body example}{use=structure,fg=black,bg=tempGreen}
+\begin{exampleblock}{Caractéristiques obtenues}
+\centering
+\includegraphics<1>[width=\textwidth]{images/signal}
+\includegraphics<2>[width=.6\textwidth]{images/signal}
+\end{exampleblock}
+}
+
+\begin{alertblock}<2>{Remarque}
+	Peu de valeurs éloignées de 0 \\
+	$\Rightarrow$ Prétraitement de la matrice de caractéristiques
+\end{alertblock}
+\end{frame}
+
+\begin{frame}{Prétraitement des caractéristiques}{Résultat}
+
+{
+\definecolor{tempGreen}{HTML}{96EAC0}
+\setbeamercolor{block body example}{use=structure,fg=black,bg=tempGreen}
+\begin{exampleblock}{Caractéristiques après prétraitement ($\log (10^9 X + 1)$)}
+\centering
+\includegraphics[width=\textwidth]{images/signalPreprocessed}
+\end{exampleblock}
+}
+
+\end{frame}
+
 
 \begin{frame}{Méthodes essayées}
 
@@ -124,10 +155,41 @@ $i, j = 1$ pour les données avant $k$ et $2$ pour les données après.
 
 \end{frame}
 
-\begin{frame}{Changement de noyau}{Résultats}
+\begin{frame}{Détermination des paramètres $A_i, C$}
 
-\begin{center}
-{\Huge  TODO}
-\end{center}
+\begin{block}{Détermination des paramètres $A_i, C$}
+\begin{itemize}
+\item Détermination de $A_1$ en essayant différentes valeurs et en visualisant $D$ ($A_2=A_1$).
+\item Détermination de $A_2$ en essayant différentes valeurs et en visualisant $D$.
+\item Détermination de $C$ visuellement.\\
+\textit{Très mauvais résultats avec la méthode de la $p$-valeur avec 200 tirages aléatoires.}
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}{Résultat final}{Différence de moyennes}
+
+{
+\definecolor{tempGreen}{HTML}{96EAC0}
+\setbeamercolor{block body example}{use=structure,fg=black,bg=tempGreen}
+\begin{exampleblock}{Distance et ruptures détectées, $A_1 = 20, A_2 = 28, C = 0,6$}
+\centering
+\includegraphics[width=\textwidth]{images/resultatMoy}
+\end{exampleblock}
+}
+
+\end{frame}
+
+\begin{frame}{Résultat final}{Distance \textit{one-class SVM}}
+
+{
+\definecolor{tempGreen}{HTML}{96EAC0}
+\setbeamercolor{block body example}{use=structure,fg=black,bg=tempGreen}
+\begin{exampleblock}{Distance et ruptures détectées, $A_1 = 20, A_2 = 28, C = 0,8$}
+\centering
+\includegraphics[width=\textwidth]{images/resultatSVM}
+\end{exampleblock}
+}
 
 \end{frame}
