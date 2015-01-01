@@ -19,6 +19,8 @@ signal = regularizeCaracts(signal, ps);
 
 %% Prétraitement des caractéristiques
 
+A1 = 20;
+A2 = 20;
 regulToMax = @(X) X/max(X);
 calculDist = @(signal) regulToMax(calculDistances(A1, A2, signal, @meanDiffDistance));
 
