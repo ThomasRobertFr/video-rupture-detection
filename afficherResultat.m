@@ -54,7 +54,7 @@ function afficherResultat(video, Dx, D, C, pts, ptsY, truePts)
         end
         
         % restore
-        imshow(read(video, j));
+        imshow(read(video, pts(i)));
         title('0');
     end
 
