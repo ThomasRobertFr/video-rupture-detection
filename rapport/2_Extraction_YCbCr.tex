@@ -1,107 +1,43 @@
-\section{Texture}
+\section{YCbCr}
 
-Dans le cadre de la détection de rupture, une autre caractéristique intéressante à exploiter est la texture des images. Différentes approches sont possibles pour représenter mathématiquement une texture. Pour ce projet, nous nous sommes intéressés à une approche statistique, avec la matrice de cooccurrence.
+YCbCr et Y’CbCr sont deux choses différentes. Pour ce projet, YCbCr est utilisé.
 
-\subsection{Définition d'une texture}
+YCbCr est une manière de représenter l’espace colorimétrique en vidéo. YCbCr n’est pas une espace de couleur absolute, il est une version compréssé et biaisé de YUV (Y : la luminance, U et V : la chrominance). Y représente la luminance, qui représente la densité de la lumière. Cb et Cr sont les deux informations de chrominance. Cb est (Y - bleu), Cr est (Y - rouge).
 
-En traitement d'image, on défini une texture comme étant \textit{une région spatiale d'une image présentant une organisation spatiale homogène des niveaux de luminance}. Une texture consiste en une reproduction de motifs de base dans l'espace et dans plusieurs directions. Ces motifs (ou primitives) sont organisés les uns par rapport aux autres de manière aléatoire.\\
-
-D'après cette définition, on peut considérer une texture comme une structure à deux dimensions :
-
-\begin{itemize}
-    \item La première dimension représente les primitives formant la texture ;
-    \item La seconde dimension représente l'organisation spatiale de ces primitives entre elles.
-\end{itemize}
-
-On recense deux types de texture, les macrotextures et les microtextures.
-
-\begin{itemize}
-    \item Une \textbf{macrotexture} est une texture structurée, pour laquelle on peut extraire facilement un motif de base et les lois d'assemblage des primitives entre elles. Par exemple, la texture d'un mur de briques est une macrotexture ;
-    \item Une \textbf{microtexture} est une texture aléatoire, avec un aspect désorganisé, mais qui donne une impression visuelle relativement homogène. On peut prendre l'exemple d'une vue aérienne sur un champs.
-\end{itemize}
-
-Cependant, il est parfois difficile de classer une texture dans une catégorie ou l'autre. En fonction de la résolution de l'image ou du zoom effectué sur celle-ci, on va préférer classer la texture dans l'une ou l'autre des catégorie. On peut prendre l'exemple du sable, dans le cas où aucun zoom n'est effectué (\ref{noZoom}), il est tentant de classer cette texture en tant que macrotexture, alors que dans le cas où un zoom est effectué (\ref{Zoom}), il est plus probable de classer cette texture en tant que microtexture.
-
-\begin{figure}
-   \begin{minipage}[c]{.46\linewidth}
-	  \centering
-      \includegraphics[scale=0.16]{img/sableNoZoom.jpg}
-      \caption{\label{noZoom} Sable non zoomé}
-   \end{minipage} \hfill
-   \begin{minipage}[c]{.46\linewidth}
+\begin{figure}[h!]
       \centering
-      \includegraphics[scale=0.2]{img/sableZoom.jpg}
-      \caption{\label{Zoom} Sable zoomé}
-   \end{minipage}
+      \includegraphics[scale=0.6]{img/YCbCr.png}
+      \caption{\label{YCbCr}YCbCr}
 \end{figure}
 
-Il est important de retenir qu'une texture est une région d'une image pour laquelle il est possible de définir une fenêtre telle que pour toute translation de cette dernière, on retrouve le même motif. Une texture peut être décrite spatialement ou statistiquement. C'est cette dernière solution que nous tâcherons d'expliquer dans le cadre de ce projet, avec la matrice de cooccurrence.
 
-\subsection{Matrice de cooccurrence}
+\subsection{Utilisation informatique}
+YCbCr est utilisé pour les images JPEG. En comparant avec RGB, ce modèle permet de réduire la taille d’une image. Bien clairement, il peut aussi augmenger l’efficacité de la détection de rupture.
 
-En analyse de texture, cette méthode statistique donne des résultats relativement bons. Cette méthode consiste à compter le nombre de paires similaires de pixels ayant une distance $d$ entre eux. Cette méthode se base sur le niveau de gris des pixels, allant de 1 à 8. On prend également en compte la direction de la paire de pixels avec un angle $\theta$. Cette angle varie généralement entre $0$ et $180 degrés$. Les pixels d'une paire sont généralement séparés par une distance $d=1$ pixel.\\
-
-Si on prend les paramètres suivants, $d=1, \theta = 0$, on obtient une paire de pixel comme suit :
+Pour faire la conversion RGB -> YCbCr il faut utiliser les formules suivantes :
 
 \[
  \left \{
- \begin{array}{c @{=} c}
-     pix_1 & (x_1, y_1) \\
-     pix_2 & (x_2, y_2) \\
+ \begin{array}{c @{=} l}
+	Y & 0.299 * R + 0.587 * G + 0.114 * B \\
+	Cb & -0.1687 * R - 0.3313 * G + 0.5 * B + 128 \\
+	Cr & 0.5 * R - 0.4187 * G - 0.0813 * B + 128 \\
  \end{array}
  \right.
 \]
 
-avec $x_2 = x_1 + 1$ et $y_2 = y_1$.\\
-
-Le pixel $pix_2$ est donc le voisin de droite du pixel $pix_1$. La matrice de cooccurrence est une matrice carrée $n\times n$, avec $n$ le niveau de gris (égale à 8 dans notre cas). Elle va recenser le nombre de pixels ayant un niveau de gris $n2$, situé à la droite d'un pixel dont le niveau de gris est $n1$. Les lignes de la matrice de cooccurrence représentent les pixels de référence et les colonnes, les pixels situés à droite du pixel de référence. Soit l'image $I$ dont les pixels ont les niveaux de gris suivants :
+Pour faire la conversion YCbCr -> RGB il faut utiliser les formules suivantes :
 
 \[
- I = \begin{pmatrix}
-     1 & 8 & 1 & 8 \\
-     2 & 1 & 1 & 8 \\
-     5 & 4 & 3 & 7 \\     
- \end{pmatrix}
+ \left \{
+ \begin{array}{c @{=} l}
+	R & Y + 1.402 * (Cr - 128) \\
+	G & Y - 0.34414 * (Cb - 128) - 0.71414 * (Cr - 128) \\
+	B & Y + 1.772 * (Cb - 128) \\
+ \end{array}
+ \right.
 \]
 
-La matrice de cooccurrence de $I$ sera donc :
 
-\[
- C = \begin{pmatrix}
-     1 & 0 & 0 & 0 & 0 & 0 & 0 & 3 \\
-     1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-     0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
-     0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
-     0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
-     0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-     0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-     1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\   
- \end{pmatrix}
-\]
-
-La valeur $C(1, 8) = 3$ signifie qu'il y a trois fois un pixel de niveau de gris $8$ à la droite d'un pixel de niveau de gris $1$.
-
-\subsection{Détection de rupture et matrice de cooccurrence}
-
-Voyons à présent en quoi la matrice de cooccurrence permet de détecter des ruptures dans une vidéo. Dans une vidéo, deux images consécutives seront relativement proches l'une de l'autre, excepté en cas de rupture. La matrice de cooccurrence va permettre d'obtenir une description de la texture de l'image. Entre deux image d'une même scène, la texture ne devrait pas changer et on devrait avoir deux matrices de cooccurrence très proches. Il faut rappeler que la texture d'une image est basé sur la répétition de motifs, et donc, dans une scène, on devrait retrouver les mêmes motifs. Dans notre cas, dans une même scène, les niveaux de gris ne devraient pas énormément évoluer d'une image à l'autre.\\
-
-La méthode des matrices de cooccurrence possède certains avantages, mais également quelques inconvénients.
-
-\subsection{Avantages}
-
-Les avantages de cette méthode sont les suivants :
-
-\begin{itemize}
-	\item Simple à mettre en oeuvre ;
-	\item Relativement robuste aux mouvements.
-\end{itemize}
-
-\subsection{Inconvénients}
-
-Les inconvénients de cette méthode sont les suivants :
-
-\begin{itemize}
-	\item Basée sur les niveaux de gris, donc peu robuste aux transitions avec un effet de fondu ;
-	\item Peu robuste aux changement d'intensité d'une couleur (comme le bleu du ciel) ;
-	\item Peu robuste à l'apparition de nouveaux objets sur une scène.
-\end{itemize}
+\subsection{Point fort}
+YCbCr est une méthode similaire que RGB, mais propose une solution plus éfficace. À l’aide de YCbCr, nous pouvons aussi augmenter l’éfficacité de la détection de rupture.
