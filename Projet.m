@@ -41,7 +41,7 @@ X = log(signal*1e9+1);
 
 regulToMax = @(X) X/max(X);
 calculDist = @(A) regulToMax(calculDistances(A, A, X, @meanDiffDistance));
-calculX = @(A) (A+1:vidObj.NumberOfFrames - A)/vidObj.FrameRate;
+calculX = @(A) (A+1:n-A)/vidObj.FrameRate;
 
 As     = {4, 7, 10, 13, 15, 17, 20, 24, 28, 31, 34};
 titles = strcat(cellfun(@(A) 'A1 = A2 = ', As, 'UniformOutput', false), cellfun(@num2str, As, 'UniformOutput', false));
