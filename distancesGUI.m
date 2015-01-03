@@ -42,7 +42,7 @@ function distancesGUI(datax, datay, stems, titles)
         hold off;
         stem(stems, stems*0+1, 'r.');
         hold on;
-        if (isvector(datax))
+        if (~iscell(datax))
             plot(datax, datay{currentI});
         else
             plot(datax{currentI}, datay{currentI});
