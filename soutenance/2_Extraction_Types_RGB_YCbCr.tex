@@ -1,94 +1,78 @@
-\begin{frame}{Texture}{Définition}
+% Type de rupture
+\begin{frame}{Différents types de rupture}{Définition}
 \begin{block}{Définition}
 
-\textit{Région spatiale d'une image présentant une organisation une organisation spatiale homogène des niveaux de luminance}.
-
-Structure en deux dimensions :
+Il existe plusieurs types de rupture, les différents types de rupture influencent le choix de la taille de fenêtre, la précision du résultat, etc. 
 
 \begin{itemize}
-    \item Première dimension :  primitives formant la texture ;
-    \item Seconde dimension : organisation spatiale de ces primitives entre elles.
+    \item Changement d'image ;
+    \item Fondu d'image ;
+    \item etc.
 \end{itemize}
 
 \end{block}
 
 \end{frame}
 
-\begin{frame}{Texture}{Types}
-\begin{block}{Types de texture :}
-
-\begin{itemize}
-    \item \textbf{Macrotexture} : texture structurée, pour laquelle on peut extraire facilement un motif de base et les lois d'assemblage des primitives entre elles ;
-    \item \textbf{Microtexture} : texture aléatoire, avec un aspect désorganisé, mais qui donne une impression visuelle relativement homogène.
-\end{itemize}
-
-\end{block}
-\end{frame}
-
-\begin{frame}{Texture}{Exemples}
+% Exemple de rupture
+\begin{frame}{Rupture}{Exemples}
 
 \begin{figure}
    \begin{minipage}[c]{.46\linewidth}
 	  \centering
-      \includegraphics[scale=0.32]{images/sable.jpg}
-      \caption{Exemple microtexture}
+      \includegraphics[scale=0.2]{images/rupture1-1.png}
+      \caption{Avant}
    \end{minipage} \hfill
    \begin{minipage}[c]{.46\linewidth}
       \centering
-      \includegraphics[scale=0.16]{images/briques.jpg}
-      \caption{Exemple macrotexture}
+      \includegraphics[scale=0.2]{images/rupture1-2.png}
+      \caption{Après}
+   \end{minipage}
+\end{figure}
+
+\begin{figure}
+   \begin{minipage}[c]{.46\linewidth}
+	  \centering
+      \includegraphics[scale=0.2]{images/rupture2-1.png}
+      \caption{Avant}
+   \end{minipage} \hfill
+   \begin{minipage}[c]{.46\linewidth}
+      \centering
+      \includegraphics[scale=0.2]{images/rupture2-2.png}
+      \caption{Après}
    \end{minipage}
 \end{figure}
 
 \end{frame}
 
+% RGB
+\begin{frame}{RGB}{Définition}
+\begin{block}{Définition}
+La matrice RGB contient les informations des trois couleurs des frames d'une vidéo. L'information de chaque couleur est représenté par 256 niveaux.
 
-\begin{frame}{Texture}{Matrice de cooccurrence}
+La structure de cette matrice est en deux dimensions:
 
-\begin{block}{Principe :}
-
-Méthode statistique basée sur le niveau de gris d'une image (de 1 à 8 au maximum). Cette méthode compte le nombre de paires de pixels similaires dans une image et stocke les résultats dans une matrice de cooccurrence (taille $n \times n$ avec $n$ le niveau de gris maximum).
+\begin{itemize}
+	\item Première dimension: 
+		\begin{itemize}
+			\item Taille: (3 couleurs) * (256 niveau);
+			\item Nombre d'occurence de chaque niveau de couleur.
+		\end{itemize}
+	\item Seconde dimension: Différents frames.
+\end{itemize}
 
 \end{block}
 
 \end{frame}
 
-\begin{frame}{Texture}{Matrice de cooccurrence}
-
-\begin{exampleblock}{Exemple}
-
-\[
- I = \begin{pmatrix}
-     1 & 8 & 1 & 8 \\
-     2 & 1 & 1 & 8 \\
-     5 & 4 & 3 & 7 \\     
- \end{pmatrix}
-, 
- C = \begin{pmatrix}
-     1 & 0 & 0 & 0 & 0 & 0 & 0 & 3 \\
-     1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-     0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
-     0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
-     0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
-     0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-     0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
-     1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\   
- \end{pmatrix}
-\]
-
-avec $I$ l'image en niveau de gris et $C$ la matrice de cooccurrence.
-
-\end{exampleblock}
-
-\end{frame}
-
-\begin{frame}{Texture}{Conclusion}
+% Conclusion
+\begin{frame}{RGB}{Conclusion}
 
 \begin{block}{Avantages :}
 
 \begin{itemize}
     \item Simple à mettre en oeuvre ;
-    \item Relativement robuste aux mouvements.
+    \item Relativement robuste à l'apparition de nouveaux objets sur une scène.
 \end{itemize}
 
 \end{block}
@@ -96,110 +80,77 @@ avec $I$ l'image en niveau de gris et $C$ la matrice de cooccurrence.
 \begin{block}{Inconvénients :}
 
 \begin{itemize}
-    \item Basée sur les niveaux de gris, donc peu robuste aux transitions avec un effet de fondu ;
-   	\item Peu robuste aux changement d'intensité d'une couleur ;
-   	\item Peu robuste à l'apparition de nouveaux objets sur une scène.
+    \item Peu robuste aux transition avec un effet de fondu .
 \end{itemize}
 
 \end{block}
 
 \end{frame}
 
-\begin{frame}{Flux optique}{Définition}
+% YCbCr
+\begin{frame}{YCbCr}{Définition}
+\begin{block}{Définition}
+YCbCr est une manière de représenter l'espace colorimétrique en vidéo. Y représente la densité de la lumière. Cb et Cr sont les deux informations de chrominance. Cb=(Y-bleu), Cr=(Y-rouge).
 
-\begin{block}{Définition :}
-
-Le flux optique (ou flot optique) représente le mouvement apparent des objets présents sur une image et est basé sur la luminance.
-
-Pour un pixel donné, la relation suivante est vérifiée entre deux images consécutives :
-
-$I(x, y, t) = I(x + \Delta x, y + \Delta y, t + \Delta t)$ avec $I$ la luminosité de l'image.
+\begin{itemize}
+	\item Première dimension: 
+		\begin{itemize}
+			\item Taille: (3 couleurs) * (256 niveau);
+			\item Nombre d'occurence de chaque niveau de couleur.
+		\end{itemize}
+	\item Seconde dimension: Différents frames.
+\end{itemize}
 
 \end{block}
 
 \end{frame}
 
-\begin{frame}{Flux optique}{Ecriture différentielle}
+% Relation YCbCr et RGB
+\begin{frame}{YCbCr}{Conversion RGB YCbCr}
 
-\begin{block}{Equation du flux optique :}
-
-En supposant que le mouvement petit et constant, on obtient :
-
-\[	
-	\begin{array}{c}
-	     \frac{dI(x, y, t)}{\Delta t} = 0 \\
-	     \frac{dI(x, y, t)}{\Delta t} = \frac{\partial I}{\partial x}.\frac{\Delta x}{\Delta t} + \frac{\partial I}{\partial y}.\frac{\Delta y}{\Delta t} + \frac{\partial I}{\partial t}\\
-	\end{array}
+\begin{exampleblock}{Conversion}
+\[
+ \left \{
+ \begin{array}{c @{=} l}
+	Y & 0.299 * R + 0.587 * G + 0.114 * B \\
+	Cb & -0.1687 * R - 0.3313 * G + 0.5 * B + 128 \\
+	Cr & 0.5 * R - 0.4187 * G - 0.0813 * B + 128 \\
+ \end{array}
+ \right.
 \]
-
-Soit :
 
 \[
-	I_x.V_x + I_y.V_y = -I_t
+ \left \{
+ \begin{array}{c @{=} l}
+	R & Y + 1.402 * (Cr - 128) \\
+	G & Y - 0.34414 * (Cb - 128) - 0.71414 * (Cr - 128) \\
+	B & Y + 1.772 * (Cb - 128) \\
+ \end{array}
+ \right.
 \]
-avec $V_x$ et $V_y$, le flux optique (ou les composants $(x, y)$ de la vitesse) et $I_x$, $I_y$ et $I_t$ les dérivées partielles de l'intensité de l'image.
-
-\end{block}
+\end{exampleblock}
 
 \end{frame}
 
-\begin{frame}{Flux optique}{Gradient et filtre de Sobel}
+% Exemple
+\begin{frame}{YCbCr}{Exemples}
 
-\begin{block}{Principe :}
-
-\begin{itemize}
-	\item Définition des matrices de convolution :
-	$
-		C_1 = \begin{pmatrix}
-			1 & 0 & -1 \\
-			2 & 0 & -2 \\
-			1 & 0 & -1 \\
-		\end{pmatrix}
-	$
-	 et 
-	$	
-		C_2 = \begin{pmatrix}
-			1 & 2 & 1 \\
-			0 & 0 & 0 \\
-			-1 & -2 & -1 \\
-		\end{pmatrix}
-	$
-	\item Calcul des dérivées partielles ($G_x$ et $G_y$) :
-	$
-		G_x = C_1 \ast Img
-	$
-	 et 
-	$	
-		G_y = C_2 \ast Img
-	$
-	\item Combinaison des gradients horizontaux et verticaux : $G = \sqrt{G_x^2 + G_y^2}$
-\end{itemize}
-
-\end{block}
+\begin{figure}
+      \centering
+      \includegraphics[scale=0.5]{images/YCbCr.png}
+      \caption{YCbCr}
+\end{figure}
 
 \end{frame}
 
-\begin{frame}{Flux optique}{Méthode de Lucas-Kanade}
-
-\begin{block}{Principe :}
-On suppose que le déplacement d'un pixel $p$ est petit et constant dans son voisinage :
-\begin{itemize}
-	\item Sélectionner une fenêtre centrée sur le pixel $p$ dont on cherche la vitesse ;
-	\item Réécrire l'équation du flux optique comme un système d'équation ;
-	\item Résoudre ce système d'équations par la méthode des moindres carrés.
-\end{itemize}
-
-\end{block}
-
-\end{frame}
-
-\begin{frame}{Flux optique}{Conclusion}
+% Conclusion
+\begin{frame}{YCbCr}{Conclusion}
 
 \begin{block}{Avantages :}
 
 \begin{itemize}
-	\item Relativement robuste aux mouvements;
-	\item Relativement robuste aux changements d'intensité de couleur.
+    \item Simple à mettre en oeuvre, plus efficace que codage RGB ;
+    \item Relativement robuste à l'apparition ou la disparition d'un objet sur une scène.
 \end{itemize}
 
 \end{block}
@@ -207,11 +158,10 @@ On suppose que le déplacement d'un pixel $p$ est petit et constant dans son voi
 \begin{block}{Inconvénients :}
 
 \begin{itemize}
-	\item Peu robuste aux transitions avec un effet de fondu ;
-	\item Assez lourd à mettre en place ;
-	\item Peu robuste lors de l'arrivé ou de la disparition d'un objet dans la scène.
+    \item Peu robuste aux transitions avec un effet de fondu .
 \end{itemize}
 
 \end{block}
 
 \end{frame}
+
