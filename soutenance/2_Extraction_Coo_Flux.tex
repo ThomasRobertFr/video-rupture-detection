@@ -1,7 +1,7 @@
 \begin{frame}{Texture}{Définition}
 \begin{block}{Définition}
 
-\textit{Région spatiale d'une image présentant une organisation une organisation spatiale homogène des niveaux de luminance}.
+\textit{Région spatiale d'une image présentant une organisation spatiale homogène des niveaux de luminance}.
 
 Structure en deux dimensions :
 
@@ -88,7 +88,8 @@ avec $I$ l'image en niveau de gris et $C$ la matrice de cooccurrence.
 
 \begin{itemize}
     \item Simple à mettre en oeuvre ;
-    \item Relativement robuste aux mouvements.
+    \item Relativement robuste aux changements d'intensité d'une couleur ;
+    \item Relativement robuste aux transitions avec un effet de fondu.
 \end{itemize}
 
 \end{block}
@@ -96,8 +97,7 @@ avec $I$ l'image en niveau de gris et $C$ la matrice de cooccurrence.
 \begin{block}{Inconvénients :}
 
 \begin{itemize}
-    \item Basée sur les niveaux de gris, donc peu robuste aux transitions avec un effet de fondu ;
-   	\item Peu robuste aux changement d'intensité d'une couleur ;
+    \item Peu robuste aux changement d'angle de caméra ;
    	\item Peu robuste à l'apparition de nouveaux objets sur une scène.
 \end{itemize}
 
@@ -208,7 +208,6 @@ On suppose que le déplacement d'un pixel $p$ est petit et constant dans son voi
 
 \begin{itemize}
 	\item Peu robuste aux transitions avec un effet de fondu ;
-	\item Assez lourd à mettre en place ;
 	\item Peu robuste lors de l'arrivé ou de la disparition d'un objet dans la scène.
 \end{itemize}
 
