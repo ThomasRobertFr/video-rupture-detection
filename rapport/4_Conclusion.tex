@@ -1,1 +1,13 @@
 \chapter{Conclusion}
+
+Ce projet aura été l'occasion pour nous de réaliser du traitement de vidéo sous forme de détection de rupture.
+
+Nous avons ainsi commencé par la phase classique d'extraction de caractéristiques de la vidéo, une phase que l'on retrouve dans la plupart des problèmes de \textit{Machine Learning} sur des images ou des vidéos, où il est nécessaire d'extraire l'information du signal d'origine pour simplifier et améliorer le processus de traitement et baisser la dimensionnalité du problème \textit{(curse of dimensionality)}.
+
+Ce fut donc pour nous l'occasion d'être confronté à ce problème, qui nous a permis d'extraire des histogrammes RGB et YCbCr, mais également des matrices de coocurrence et le gradient de l'image.
+
+Nous avons également été confronté à la nécessité de prétraiter la matrice de caractéristiques afin de faire ressortir les faibles valeurs et atténuer les fortes valeurs.
+
+Cette phase a été suivie de la détection de rupture utilisant deux types de distance, une distance « simple » qu'est la somme des différence des moyennes, et une distance plus complexe basée sur les paramètres de \textit{SVM one-class}. Les deux ayant fourni des résultats assez bons.
+
+Les axes d'amélioration de notre projet se situent sans doute dans l'essai d'autres caractéristiques qui pourraient peut-être être plus robustes aux variations à l'intérieur d'une scène. Concernant les méthodes de détection de rupture, nous n'avons pas trouvé de méthode alternative importante à celle de la dérivée filtrée. En revanche, il pourrait être intéressant de travailler sur des indicateurs $\hat{\theta}$ et des distances $D$ différentes et qui permettraient une meilleure détection de rupture.

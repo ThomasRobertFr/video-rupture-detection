@@ -3,12 +3,12 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[francais]{babel}
-\usepackage{lmodern}
+\usepackage{libertine}
 \usepackage{eurosym}
 
 % Mise en page
 \usepackage{url}
-\usepackage[top=2.1cm,bottom=2cm,left=2cm,right=2cm]{geometry}
+\usepackage[top=2.1cm,bottom=2.1cm,left=2cm,right=2cm]{geometry}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=false,
@@ -33,9 +33,8 @@
 \nomtcrule
 
 % Images
-%\usepackage{float}
-%\usepackage{wrapfig}
 \usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage[final]{pdfpages}
 
 % Chapters
@@ -43,11 +42,12 @@
 \definecolor{gray75}{gray}{0.75}
 \newcommand{\hsp}{\hspace{20pt}}
 \titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+\titlespacing*{\chapter}{0pt}{.0pt}{1em}
+\titlespacing*{\section}{0pt}{.5pt}{.5em}
+\titlespacing*{\subsection}{0pt}{.3pt}{.3em}
 
 % Algorithmique
 \usepackage{listings}
-%\usepackage{tikz}
-%\usetikzlibrary{arrows,shapes}\usetikzlibrary{arrows,shapes}
 
 % Maths
 \usepackage{amsmath}

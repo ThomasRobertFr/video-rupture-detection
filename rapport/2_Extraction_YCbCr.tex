@@ -6,7 +6,7 @@ YCbCr est une manière de représenter l’espace colorimétrique en vidéo. YCb
 
 \begin{figure}[h!]
       \centering
-      \includegraphics[scale=0.6]{img/YCbCr.png}
+      \includegraphics[scale=0.6]{images/YCbCr.png}
       \caption{\label{YCbCr}YCbCr}
 \end{figure}
 
@@ -19,9 +19,9 @@ Pour faire la conversion RGB -> YCbCr il faut utiliser les formules suivantes :
 \[
  \left \{
  \begin{array}{c @{=} l}
-	Y & 0.299 * R + 0.587 * G + 0.114 * B \\
-	Cb & -0.1687 * R - 0.3313 * G + 0.5 * B + 128 \\
-	Cr & 0.5 * R - 0.4187 * G - 0.0813 * B + 128 \\
+	Y & 0.299 \times R + 0.587 \times G + 0.114 \times B \\
+	Cb & -0.1687 \times R - 0.3313 \times G + 0.5 \times B + 128 \\
+	Cr & 0.5 \times R - 0.4187 \times G - 0.0813 \times B + 128 \\
  \end{array}
  \right.
 \]
@@ -31,9 +31,9 @@ Pour faire la conversion YCbCr -> RGB il faut utiliser les formules suivantes :
 \[
  \left \{
  \begin{array}{c @{=} l}
-	R & Y + 1.402 * (Cr - 128) \\
-	G & Y - 0.34414 * (Cb - 128) - 0.71414 * (Cr - 128) \\
-	B & Y + 1.772 * (Cb - 128) \\
+	R & Y + 1.402 \times (Cr - 128) \\
+	G & Y - 0.34414 \times (Cb - 128) - 0.71414 \times (Cr - 128) \\
+	B & Y + 1.772 \times (Cb - 128) \\
  \end{array}
  \right.
 \]
