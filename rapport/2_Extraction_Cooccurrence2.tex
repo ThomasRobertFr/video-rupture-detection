@@ -20,7 +20,7 @@ On recense deux types de texture, les macrotextures et les microtextures.
     \item Une \textbf{microtexture} est une texture aléatoire, avec un aspect désorganisé, mais qui donne une impression visuelle relativement homogène. On peut prendre l'exemple d'une vue aérienne sur un champs.
 \end{itemize}
 
-Cependant, il est parfois difficile de classer une texture dans une catégorie ou l'autre. En fonction de la résolution de l'image ou du zoom effectué sur celle-ci, on va préférer classer la texture dans l'une ou l'autre des catégorie. On peut prendre l'exemple du sable, dans le cas où aucun zoom n'est effectué (\ref{noZoom}), il est tentant de classer cette texture en tant que macrotexture, alors que dans le cas où un zoom est effectué (\ref{Zoom}), il est plus probable de classer cette texture en tant que microtexture.
+Cependant, il est parfois difficile de classer une texture dans une catégorie ou l'autre. En fonction de la résolution de l'image ou du zoom effectué sur celle-ci, on va préférer classer la texture dans l'une ou l'autre des catégories. On peut prendre l'exemple du sable, dans le cas où aucun zoom n'est effectué (\ref{noZoom}), il est tentant de classer cette texture en tant que macrotexture, alors que dans le cas où un zoom est effectué (\ref{Zoom}), il est plus probable de classer cette texture en tant que microtexture.
 
 \begin{figure}
    \begin{minipage}[c]{.46\linewidth}
@@ -39,7 +39,7 @@ Il est important de retenir qu'une texture est une région d'une image pour laqu
 
 \subsection{Matrice de cooccurrence}
 
-En analyse de texture, cette méthode statistique donne des résultats relativement bons. Cette méthode consiste à compter le nombre de paires similaires de pixels ayant une distance $d$ entre eux. Cette méthode se base sur le niveau de gris des pixels, allant de 1 à 8. On prend également en compte la direction de la paire de pixels avec un angle $\theta$. Cette angle varie généralement entre $0$ et $180 degrés$. Les pixels d'une paire sont généralement séparés par une distance $d=1$ pixel.\\
+En analyse de texture, cette méthode statistique donne des résultats relativement bons. Cette méthode consiste à compter le nombre de paires similaires de pixels ayant une distance $d$ entre eux. Cette méthode se base sur le niveau de gris des pixels, allant de 1 à 8. On prend également en compte la direction de la paire de pixels avec un angle $\theta$. Cette angle varie généralement entre $0$ et $180 degres$. Les pixels d'une paire sont généralement séparés par une distance $d=1$ pixel.\\
 
 Si on prend les paramètres suivants, $d=1, \theta = 0$, on obtient une paire de pixel comme suit :
 
@@ -83,7 +83,7 @@ La valeur $C(1, 8) = 3$ signifie qu'il y a trois fois un pixel de niveau de gris
 
 \subsection{Détection de rupture et matrice de cooccurrence}
 
-Voyons à présent en quoi la matrice de cooccurrence permet de détecter des ruptures dans une vidéo. Dans une vidéo, deux images consécutives seront relativement proches l'une de l'autre, excepté en cas de rupture. La matrice de cooccurrence va permettre d'obtenir une description de la texture de l'image. Entre deux image d'une même scène, la texture ne devrait pas changer et on devrait avoir deux matrices de cooccurrence très proches. Il faut rappeler que la texture d'une image est basé sur la répétition de motifs, et donc, dans une scène, on devrait retrouver les mêmes motifs. Dans notre cas, dans une même scène, les niveaux de gris ne devraient pas énormément évoluer d'une image à l'autre.\\
+Voyons à présent en quoi la matrice de cooccurrence permet de détecter des ruptures dans une vidéo. Dans une vidéo, deux images consécutives seront relativement proches l'une de l'autre, excepté en cas de rupture. La matrice de cooccurrence va permettre d'obtenir une description de la texture de l'image. Entre deux images d'une même scène, la texture ne devrait pas changer et on devrait avoir deux matrices de cooccurrence très proches. Il faut rappeler que la texture d'une image est basée sur la répétition de motifs, et donc, dans une scène, on devrait retrouver les mêmes motifs. Dans notre cas, dans une même scène, les niveaux de gris ne devraient pas énormément évoluer d'une image à l'autre.\\
 
 La méthode des matrices de cooccurrence possède certains avantages, mais également quelques inconvénients.
 
@@ -93,7 +93,8 @@ Les avantages de cette méthode sont les suivants :
 
 \begin{itemize}
 	\item Simple à mettre en oeuvre ;
-	\item Relativement robuste aux mouvements.
+	\item Relativement robuste aux changements d'intensité d'une couleur ;
+	\item Relativement robuste aux transitions avec un effet de fondu.
 \end{itemize}
 
 \subsection{Inconvénients}
@@ -101,7 +102,6 @@ Les avantages de cette méthode sont les suivants :
 Les inconvénients de cette méthode sont les suivants :
 
 \begin{itemize}
-	\item Basée sur les niveaux de gris, donc peu robuste aux transitions avec un effet de fondu ;
-	\item Peu robuste aux changement d'intensité d'une couleur (comme le bleu du ciel) ;
+	\item Peu robuste aux changement d'angles de caméra ;
 	\item Peu robuste à l'apparition de nouveaux objets sur une scène.
 \end{itemize}

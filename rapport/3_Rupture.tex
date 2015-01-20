@@ -10,11 +10,11 @@ Cette détection de rupture sera appliquée sur une matrice de signal $X$ conten
 
 \section{Prétraitement des caractéristiques}
 
-Avant de se lancer dans la détection, il peut être intéressant de regarder ce que contient la matrice de caractéristiques $X$. On se propose de la visualiser sous la forme d'une image représenté par la figure \ref{Xorigin}.
+Avant de se lancer dans la détection, il peut être intéressant de regarder ce que contient la matrice de caractéristiques $X$. On se propose de la visualiser sous la forme d'une image représentée par la figure \ref{Xorigin}.
 
 Notons que cette première matrice contient des blocs de caractéristiques superposés verticalement (RGB puis YCbCr puis coocurence, etc.), et que chacun de ces blocs a été normalisé entre 0 et 1 afin que les caractéristiques soient comparables entre elles.
 
-On peut voir sur la figure qu'à première vue, la matrice à l'air quasiment creuse, comme si tout valait $0$. En réalité, cette perception est due au fait que quelques composantes de chacune des caractéristiques prend des très grandes valeurs. Par exemple sur une image noire, certaines caractéristiques prennent des très grandes valeurs comparativement aux autres.
+On peut voir sur la figure qu'à première vue, la matrice a l'air quasiment creuse, comme si tout valait $0$. En réalité, cette perception est due au fait que quelques composantes de chacune des caractéristiques prend des très grandes valeurs. Par exemple sur une image noire, certaines caractéristiques prennent des très grandes valeurs comparativement aux autres.
 
 On se propose donc de prétraiter cette matrice $X$ par une fonction de normalisation appliquée à chaque valeur de la matrice. 
 
