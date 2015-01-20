@@ -1,4 +1,4 @@
-%% Calcul des caractéristiques
+%% 1. Calcul des caractéristiques
 
 compute = false;
 
@@ -17,7 +17,7 @@ n = vidObj.NumberOfFrames;
 % Régularisation des caractéristiques les unes par rapport aux autres
 signal = regularizeCaracts(signal, ps);
 
-%% Prétraitement des caractéristiques
+%% 2. Prétraitement des caractéristiques
 
 A1 = 20;
 A2 = 20;
@@ -35,7 +35,7 @@ signalsRegulYs = cellfun(@eval, reguls, 'UniformOutput', false);
 
 signalAndDistancesGUI(signals, signalsRegulX, signalsRegulYs, datax, datay, ptsApprox, titles);
 
-%% Test de différentes fenêtres
+%% 3. Test de différentes fenêtres
 
 X = log(signal*1e9+1);
 
@@ -50,7 +50,7 @@ datax  = cellfun(calculX, As, 'UniformOutput', false);
 
 distancesGUI(datax, datay, ptsApprox, titles);
 
-%% Test de différentes fenêtres pour A2
+%% 4. Test de différentes fenêtres pour A2
 
 X = log(signal*1e9+1);
 A1 = 20;
@@ -66,23 +66,7 @@ datax  = cellfun(calculX, As, 'UniformOutput', false);
 
 distancesGUI(datax, datay, ptsApprox, titles);
 
-%% Calcul des ruptures avec une distance "différence de moyennes"
-
-X = log(signal*1e9+1);
-A1 = 20;
-A2 = 28;
-C = .6;
-
-D = calculDistances(A1, A2, X, @meanDiffDistance);
-D = D / max(D);
-Dx = (A1+1:n-A2)/vidObj.FrameRate;
-
-[zones, points] = detectionRupture(D, C);
-points = points + A1 - 1;
-
-afficherResultat(vidObj, Dx, D, C, points, points/vidObj.FrameRate, ptsApprox)
-
-%% Calcul de C avec la méthode la p-valeur
+%% 5. Calcul de C avec la méthode la p-valeur
 % Très mauvais résultats avec 200 tirages, on a C = .46 pour p = 0, donc
 % aucune chance d'atteindre les valeurs supérieures, qui sont pourtant bien
 % meilleures.
@@ -108,7 +92,23 @@ plot(Cs);
 title('Cs');
 xlabel('p');
 
-%% Calcul des ruptures avec une distance par SVM
+%% 6. Calcul des ruptures avec une distance "différence de moyennes"
+
+X = log(signal*1e9+1);
+A1 = 20;
+A2 = 28;
+C = .6;
+
+D = calculDistances(A1, A2, X, @meanDiffDistance);
+D = D / max(D);
+Dx = (A1+1:n-A2)/vidObj.FrameRate;
+
+[zones, points] = detectionRupture(D, C);
+points = points + A1 - 1;
+
+afficherResultat(vidObj, Dx, D, C, points, points/vidObj.FrameRate, ptsApprox)
+
+%% 7. Calcul des ruptures avec une distance par SVM
 
 X = log(signal*1e9+1);
 A1 = 20;
