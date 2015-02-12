@@ -10,3 +10,5 @@ La démonstration a été réalisée sur [la bande annonce de Star Wars 7 publi�
 Pour lancer la démonstration, vous devez donc télécharger cette vidéo, la nommer `StarWars.mp4` et la mettre à la racine du dépôt. Vous pourrez alors lancer le script principal nommé `Projet.m`.
 
 Le rapport et le support de soutenance sont également disponibles.
+
+Notons que le projet nécessite la librairie [*SVM and Kernel Methods Matlab Toolbox*](http://asi.insa-rouen.fr/enseignants/~arakoto/toolbox/), ainsi que l'*Image Acquisition Toolbox* de Matlab pour fonctionner.
